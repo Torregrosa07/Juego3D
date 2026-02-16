@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://bfkpgy1inw47a"]
+
+[ext_resource type="PackedScene" uid="uid://c6cpt3da3p5bj" path="res://assets/Character/Character.gltf" id="1_6bd6g"]
+[ext_resource type="Script" uid="uid://dj7kkc30870fs" path="res://resources/scripts/player.gd" id="2_vlj5r"]
+[ext_resource type="AudioStream" uid="uid://dpom13a14fj6h" path="res://resources/audio/Jump.ogg" id="3_oyr7h"]
+[ext_resource type="ArrayMesh" uid="uid://f7yeq5hspahb" path="res://assets/Nature/Cloud_1.obj" id="4_p8meq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j7bwo"]
+radius = 0.8
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ndo2"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.392157)
+
+[sub_resource type="Curve" id="Curve_tl2o6"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_t3upm"]
+curve = SubResource("Curve_tl2o6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fm3p5"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+gravity = Vector3(0, 9.8, 0)
+radial_accel_min = 6.0
+radial_accel_max = 8.0
+radial_accel_curve = SubResource("CurveTexture_t3upm")
+scale_min = 0.05
+scale_max = 0.3
+
+[node name="Player" instance=ExtResource("1_6bd6g")]
+collision_mask = 15
+script = ExtResource("2_vlj5r")
+
+[node name="Skeleton3D" parent="CharacterArmature" index="0"]
+bones/1/rotation = Quaternion(7.85402e-06, 0.70295197, 0.7112374, 7.762523e-06)
+bones/2/rotation = Quaternion(-3.5526934e-15, 1.1920933e-07, -8.470341e-22, 1)
+bones/4/rotation = Quaternion(0.16683146, 4.3189974e-07, 1.03120186e-07, 0.9859855)
+bones/5/rotation = Quaternion(-0.013158741, -8.322606e-07, -2.942855e-09, 0.9999134)
+bones/6/rotation = Quaternion(-0.027065465, 6.777682e-07, -1.8720296e-09, 0.99963367)
+bones/7/rotation = Quaternion(-0.084953085, -0.00027447942, 2.3338975e-05, 0.9963849)
+bones/9/rotation = Quaternion(-0.1394561, 0.009856244, -0.018561183, 0.9900053)
+bones/10/rotation = Quaternion(-0.41355312, -0.08990677, 0.19620739, 0.88453)
+bones/12/rotation = Quaternion(-0.1394561, -0.009856276, 0.018561227, 0.9900053)
+bones/13/rotation = Quaternion(-0.4135531, 0.08990671, -0.19620731, 0.88452995)
+bones/14/rotation = Quaternion(-0.035130102, 0.012167383, -0.41025436, 0.91121304)
+bones/15/rotation = Quaternion(0.52678555, 0.50360876, 0.47415757, -0.49401394)
+bones/16/rotation = Quaternion(-0.017246334, 0.25878364, -0.22990243, 0.9380184)
+bones/17/rotation = Quaternion(0.012537885, 0.018195217, -0.006543083, 0.9997345)
+bones/19/rotation = Quaternion(0.5267858, -0.5036087, -0.47415748, -0.4940139)
+bones/20/rotation = Quaternion(-0.017246343, -0.25878373, 0.2299025, 0.9380183)
+bones/21/rotation = Quaternion(0.0125379, -0.01819519, 0.0065430654, 0.9997345)
+bones/22/rotation = Quaternion(0.9101397, 0.013652579, 0.00735962, 0.41401115)
+bones/23/rotation = Quaternion(0.6922099, 0.011379804, 0.015124545, 0.721448)
+bones/24/rotation = Quaternion(0.9101398, -0.0136525985, -0.0073588537, 0.414011)
+bones/25/rotation = Quaternion(0.6922098, -0.01137968, -0.015124411, 0.7214482)
+bones/26/rotation = Quaternion(-3.5526934e-15, 1.1920937e-07, -8.470344e-22, 1)
+bones/27/rotation = Quaternion(-7.85402e-06, 0.70295197, 0.7112374, -7.762523e-06)
+bones/28/rotation = Quaternion(-3.552734e-15, -5.9604645e-07, 3.3881257e-21, 1)
+
+[node name="AnimationPlayer" parent="." index="1"]
+process_mode = 3
+autoplay = "Wave"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.2)
+shape = SubResource("CapsuleShape3D_j7bwo")
+
+[node name="AudioJump" type="AudioStreamPlayer" parent="." index="3"]
+stream = ExtResource("3_oyr7h")
+volume_db = -8.2
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." index="4"]
+material_override = SubResource("StandardMaterial3D_7ndo2")
+emitting = false
+amount = 10
+lifetime = 0.3
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fm3p5")
+draw_pass_1 = ExtResource("4_p8meq")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
