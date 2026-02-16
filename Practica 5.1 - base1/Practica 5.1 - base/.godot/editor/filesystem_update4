@@ -1,2 +1,4 @@
 res://scenes/gui.tscn
 res://config/world_environment.tres
+res://resources/scripts/player.gd
+res://resources/scripts/coin.gd
